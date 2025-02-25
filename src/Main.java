@@ -39,5 +39,26 @@ public class Main {
             System.out.println("Main thread was interrupted");
         }
         System.out.println("Все потоки завершены. Итоговое значение count = "+ Counter.GetIncrement());
+
+
+//-----------------------------------------------------------------------------------------------
+        // 3 Task
+
+        AccountThread accThread1 = new AccountThread(BankAccount.bankAccount);
+        AccountThread accThread2 = new AccountThread(BankAccount.bankAccount);
+
+        Thread thread111 = new Thread(accThread1);
+        Thread thread222 = new Thread(accThread2);
+
+        thread111.start();
+        thread222.start();
+
+        try {
+            thread111.join();
+            thread222.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread was interrupted");
+        }
+        System.out.println("Все потоки завершены. Итоговое значение счета = "+ BankAccount.getBalance());
     }
 }
