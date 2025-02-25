@@ -10,6 +10,6 @@ public class AccountThread implements Runnable {
 
     public void run() {
         BankAccount.deposit(1000);
-        BankAccount.withdraw(100);
+        BankAccount.withdraw(1200);
     }
 }

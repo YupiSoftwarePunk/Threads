@@ -4,32 +4,35 @@ public class BankAccount {
 
     public static BankAccount bankAccount;
     private static double balance = 0;
-    private static ReentrantLock lock;
+    private static ReentrantLock lock = new ReentrantLock();
 
 
-    public static double deposit(double amount) {
+    public static void deposit(double amount) {
+        lock.lock();
         try {
-            lock.lock();
             balance += amount;
             System.out.println("Счет пополнен на: "+ amount);
         } catch (Exception e) {
-            System.out.println("Ошибка при блокировке доступа или пополнении счета");
+            System.out.println("Ошибка при пополнении счета");
         }
         lock.unlock();
-        return balance;
     }
 
-    public static double withdraw(double amount) {
-        try {
+    public static void withdraw(double amount) {
         lock.lock();
-        balance -= amount;
-            System.out.println("Со счета было списано: "+ amount);
-    } catch (Exception e) {
-        System.out.println("Ошибка при блокировке доступа или списании со счета");
-    }
+        try {
+            if (amount <= balance) {
+                balance -= amount;
+                System.out.println("Со счета было списано: " + amount);
+            } else {
+                System.out.println("Недостаточно средств для списания: " + amount);
+            }
+        }
+        catch (Exception e) {
+        System.out.println("Ошибка при списании со счета");
+        }
         lock.unlock();
-        return balance;
-}
+    }
 
     public static double getBalance() {
         return balance;
